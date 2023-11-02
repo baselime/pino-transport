@@ -20,7 +20,7 @@ function sendToBaselime(opts: ClientOpts, toSend: any[]) {
 
 export default function (opts: ClientOpts) {
   if (!opts?.baselimeApiKey || !opts?.dataset) {
-    throw new Error('Axiom orgId and token are required !');
+    throw new Error('baselimeApiKey and dataset are required!');
   }
  
 
