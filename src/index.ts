@@ -3,7 +3,7 @@ import Axios from 'axios';
 type ClientOpts = {
     baselimeApiKey: string;
     service?: string;
-    dataset: string;
+    dataset?: string;
     namespace?: string;
 }
 
@@ -19,10 +19,11 @@ function sendToBaselime(opts: ClientOpts, toSend: any[]) {
 }
 
 export default function (opts: ClientOpts) {
-  if (!opts?.baselimeApiKey || !opts?.dataset) {
-    throw new Error('baselimeApiKey and dataset are required!');
+  if (!opts?.baselimeApiKey) {
+    throw new Error('baselimeApiKey is required!');
   }
  
+  opts.dataset = opts.dataset || 'pino-logs';
 
   let toSend: any[] = [];
   let immediate: null | ReturnType<typeof setImmediate> = null;
