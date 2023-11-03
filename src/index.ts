@@ -17,6 +17,16 @@ function sendToBaselime(opts: ClientOpts, toSend: any[]) {
      });
 }
 
+const levels: Record<number, string> = {
+  10: "trace",
+  20: "debug",
+  30: "info",
+  40: "warn",
+  50: "error",
+  60: "fatal",
+}
+
+
 export default function (opts: ClientOpts) {
   if (!opts?.baselimeApiKey) {
     throw new Error('baselimeApiKey is required!');
@@ -43,7 +53,13 @@ export default function (opts: ClientOpts) {
       });
     },
     {
-      parseLine: (line) => ({ ...JSON.parse(line) }),
+      parseLine: (line) => {
+        const log = JSON.parse(line) as any;
+        if(log.level) {
+          log.level = levels[log.level || 30]
+        }
+        return log;
+      },
       async close() {
         if (toSend.length > 0) {
           clearImmediate(immediate);
