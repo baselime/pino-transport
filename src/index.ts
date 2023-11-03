@@ -8,11 +8,11 @@ type ClientOpts = {
 }
 
 function sendToBaselime(opts: ClientOpts, toSend: any[]) {
-    return Axios.post('https://api.baselime.io/v1', toSend, {
+  console.log(toSend)
+    return Axios.post(`https://events.baselime.io/v1/${opts.dataset}`, toSend, {
         headers: {
             'x-api-key': opts.baselimeApiKey,
             'x-service': opts.service,
-            'x-dataset': opts.dataset,
             'x-namespace': opts.namespace,
         }
      });
@@ -29,7 +29,8 @@ export default function (opts: ClientOpts) {
   let immediate: null | ReturnType<typeof setImmediate> = null;
 
   function send() {
-    sendToBaselime(opts, toSend);
+    console.log(opts, toSend)
+    sendToBaselime(opts, toSend).catch(console.error);
     toSend = [];
     immediate = null;
   }
